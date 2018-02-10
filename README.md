@@ -15,7 +15,14 @@ export KEY_WORD="clippy draw" # change this as you wish
 go build
 ./clippy-bot 
 
+You can also just use a container:
 
+```
+docker run -d -e API_KEY=<yourkey> \
+    -e BOT_USER=<user> \
+    -e KEY_WORD="clippy draw" \
+    jeremyrickard/clippy-bot
+``` 
 
 
 

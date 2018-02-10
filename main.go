@@ -60,12 +60,14 @@ func generateMessage(message string) string {
 
 	var lines bytes.Buffer
 	words := strings.Split(message, " ")
-	word, words := words[0], words[1:]
+	//word, words := words[0], words[1:]
 	for len(words) > 0 {
-		line := word
+		var word string
+		var line string
 		for len(words) > 0 && len(line)+len(words[0])+1 < 39 {
 			word, words = words[0], words[1:]
 			line = line + " " + word
+
 		}
 		outputLine := fmt.Sprintf("   | %s", line)
 		filler := 43 - len(outputLine)
