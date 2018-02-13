@@ -53,6 +53,8 @@ func sendReply(api *slack.Client, channel, botUser, message string) {
 func handleMessage(keyword, botUser string, api *slack.Client, message *slack.MessageEvent) {
 	if strings.HasPrefix(message.Text, keyword) {
 		go sendReply(api, message.Channel, botUser, message.Text[len(keyword):])
+	} else {
+		fmt.Printf("message text %s doesn't have %s prefix\n", message.Text, keyword)
 	}
 }
 
