@@ -41,8 +41,9 @@ func main() {
 
 func sendReply(api *slack.Client, channel, botUser, message string) {
 	params := slack.PostMessageParameters{
-		Markdown: true,
-		Username: botUser,
+		Markdown:    true,
+		Username:    botUser,
+		UnfurlLinks: true,
 	}
 	_, _, err := api.PostMessage(channel, generateMessage(message), params)
 	if err != nil {
