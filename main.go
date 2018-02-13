@@ -27,13 +27,9 @@ func main() {
 	rtm := api.NewRTM()
 	go rtm.ManageConnection()
 	for msg := range rtm.IncomingEvents {
-		switch msg.Data.(type) {
+		switch t := msg.Data.(type) {
 		case *slack.MessageEvent:
-			message, ok := msg.Data.(*slack.MessageEvent)
-			if !ok {
-				log.Printf("couldn't cast message")
-			}
-			go handleMessage(keyword, botUser, api, message)
+			go handleMessage(keyword, botUser, api, t)
 		default:
 		}
 	}
