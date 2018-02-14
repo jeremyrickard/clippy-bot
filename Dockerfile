@@ -1,9 +1,8 @@
-from golang:1.9
+FROM golang:1.9
 
 WORKDIR /go/src/clippy-bot
 COPY . .
 
-RUN go get -d -v ./...
-RUN go install -v ./...
+RUN go build -o clippy-bot .
 
-CMD ["clippy-bot"]
+CMD ["./clippy-bot"]
