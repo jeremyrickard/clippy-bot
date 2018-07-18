@@ -27,13 +27,9 @@ func main() {
 	rtm := api.NewRTM()
 	go rtm.ManageConnection()
 	for msg := range rtm.IncomingEvents {
-		switch msg.Data.(type) {
+		switch t := msg.Data.(type) {
 		case *slack.MessageEvent:
-			message, ok := msg.Data.(*slack.MessageEvent)
-			if !ok {
-				log.Printf("couldn't cast message")
-			}
-			go handleMessage(keyword, botUser, api, message)
+			go handleMessage(keyword, botUser, api, t)
 		default:
 		}
 	}
@@ -41,8 +37,9 @@ func main() {
 
 func sendReply(api *slack.Client, channel, botUser, message string) {
 	params := slack.PostMessageParameters{
-		Markdown: true,
-		Username: botUser,
+		Markdown:    true,
+		Username:    botUser,
+		UnfurlLinks: true,
 	}
 	_, _, err := api.PostMessage(channel, generateMessage(message), params)
 	if err != nil {
@@ -53,6 +50,8 @@ func sendReply(api *slack.Client, channel, botUser, message string) {
 func handleMessage(keyword, botUser string, api *slack.Client, message *slack.MessageEvent) {
 	if strings.HasPrefix(message.Text, keyword) {
 		go sendReply(api, message.Channel, botUser, message.Text[len(keyword):])
+	} else {
+		fmt.Printf("message text %s doesn't have %s prefix\n", message.Text, keyword)
 	}
 }
 
